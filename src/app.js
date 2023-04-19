@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const path = require('path');
-const server = http.createServer(app);
 app.set('port', process.env.PORT || 3000);
 
 const publicPath = path.resolve(__dirname, "../public");
@@ -12,6 +11,11 @@ app.use(express.static(publicPath));
 app.get('/', (req,res) =>{
     res.sendFile(path.resolve(__dirname, 'views', 'home.html'));
 })
+
+//start the server
+const server = app.listen(app.get('port'), ()=>{
+    console.log(`Escuchando al servidor http://localhost:${app.get('port')}`);
+});
 
 //websockets
 const { Server } = require('socket.io');
@@ -28,10 +32,3 @@ io.on('connection', (socket)=>{
         socket.broadcast.emit('chat:typing', data)
     })
 })
-
-//start the server
-server.listen(app.get('port'), ()=>{
-    console.log(`Escuchando al servidor http://localhost:${app.get('port')}`);
-});
-
-
