@@ -1,3 +1,4 @@
+console.log("test");
 const socket = io();
 
 let output = document.getElementById('output');
