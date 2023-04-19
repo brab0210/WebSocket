@@ -7,18 +7,14 @@ app.set('port', process.env.PORT || 3000);
 const publicPath = path.resolve(__dirname, "../public");
 app.use(express.static(publicPath));
 
-//start the server
-const server = app.listen(app.get('port'), ()=>{
-    console.log(`Escuchando al servidor http://localhost:${app.get('port')}`);
-});
 
 app.get('/', (req,res) =>{
     res.sendFile(path.resolve(__dirname, 'views', 'home.html'));
 })
 
 //websockets
-const SocketIO = require('socket.io');
-const io = SocketIO(server);
+const { Server } = require('socket.io');
+const io = new Server(server);
 
 io.on('connection', (socket)=>{
     console.log('new connection', socket.id);
@@ -31,5 +27,10 @@ io.on('connection', (socket)=>{
         socket.broadcast.emit('chat:typing', data)
     })
 })
+
+//start the server
+const server = app.listen(app.get('port'), ()=>{
+    console.log(`Escuchando al servidor http://localhost:${app.get('port')}`);
+});
 
 
