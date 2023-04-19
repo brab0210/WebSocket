@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
+const http = require('http');
 const path = require('path');
-
+const server = http.createServer(app);
 app.set('port', process.env.PORT || 3000);
 
 const publicPath = path.resolve(__dirname, "../public");
@@ -29,7 +30,7 @@ io.on('connection', (socket)=>{
 })
 
 //start the server
-const server = app.listen(app.get('port'), ()=>{
+server.listen(app.get('port'), ()=>{
     console.log(`Escuchando al servidor http://localhost:${app.get('port')}`);
 });
 
